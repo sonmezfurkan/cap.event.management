@@ -6,28 +6,33 @@ Source code for **SAP CAP — From Zero to Production**, a full course that buil
 
 ## How this repo is organized
 
-The code is grouped into the eleven course sections. Inside each section, every numbered folder is the **complete project state at the end of that lesson** — a cumulative checkpoint you can open and run on its own.
+The code is grouped into the eleven course sections. Inside each section, every lesson folder (`<number>-<lesson-name>`) is the **complete project state at the end of that lesson** — a cumulative checkpoint you can open and run on its own.
 
 ```
-section-01-getting-started/
-  03/
 section-02-domain-modeling/
-  04/  05/  06/  07/
+  04-cds-modeling-fundamentals/
+  05-associations-and-compositions/
+  06-aspects-reuse-and-common-patterns/
+  07-initial-data-and-database-setup/
 section-03-services-and-custom-logic/
-  08/  09/  …  16/
+  08-defining-services-and-projections/
+  …
+  16-defining-and-emitting-events/
 …
 section-11-deployment-to-btp/
-  54/  55/  56/  57/
+  54-understanding-the-mta/
+  …
+  57-sap-build-work-zone-integration/
 ```
 
-So to see the code as it stood after **Lesson 24**, open `section-04-fiori-elements-ui-and-localization/24/`.
+So to see the code as it stood after **Lesson 24**, open `section-04-fiori-elements-ui-and-localization/24-test-data-and-sessions-object-page/`.
 
 ## Running a snapshot
 
 Each folder is a standalone CAP project (Node.js + TypeScript):
 
 ```bash
-cd section-03-services-and-custom-logic/16
+cd section-03-services-and-custom-logic/16-defining-and-emitting-events
 npm install
 cds watch
 ```
