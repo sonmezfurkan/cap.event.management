@@ -1,0 +1,27 @@
+### Search events by keyword (matches "Cloud Summit 2026" + "cloud-native" in its description)
+GET http://localhost:4004/odata/v4/admin/Events?$search=cloud
+Authorization: Basic admin:admin
+
+### Search events — combined with $filter
+GET http://localhost:4004/odata/v4/admin/Events?$search=SAP&$filter=status eq 'published'
+Authorization: Basic admin:admin
+
+### Search events — combined with $orderby
+GET http://localhost:4004/odata/v4/admin/Events?$search=development&$orderby=startDate desc
+Authorization: Basic admin:admin
+
+### Search sessions (matches "HANA Cloud Workshop")
+GET http://localhost:4004/odata/v4/admin/Events(ID=3fa85f64-5717-4562-b3fc-2c963f66afa6,IsActiveEntity=true)/sessions?$search=workshop
+Authorization: Basic admin:admin
+
+### Search speakers by name
+GET http://localhost:4004/odata/v4/admin/Speakers?$search=Smith
+Authorization: Basic admin:admin
+
+### Search speakers by expertise (matches bio field — "enterprise integration")
+GET http://localhost:4004/odata/v4/admin/Speakers?$search=enterprise
+Authorization: Basic admin:admin
+
+### Search via RegistrationService (same annotation, different service)
+GET http://localhost:4004/odata/v4/registration/Events?$search=cloud
+Authorization: Basic attendee:attendee

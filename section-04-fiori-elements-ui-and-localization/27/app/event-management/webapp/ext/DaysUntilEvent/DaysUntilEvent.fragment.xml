@@ -1,0 +1,11 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+    <ObjectNumber 
+        id="daysUntilEvent"
+        core:require="{ formatter: 'app/events/eventmanagement/ext/DaysUntilEvent/DaysUntilEventFormatter' }"
+        number="{ path: 'startDate', formatter: 'formatter.formatDaysUntilNumber' }"
+        unit="{ path: 'startDate', formatter: 'formatter.formatDaysUntilUnit' }"
+        state="{ path: 'startDate', formatter: 'formatter.formatDaysUntilState' }"
+    />    
+</core:FragmentDefinition>

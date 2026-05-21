@@ -1,0 +1,62 @@
+### === Temporal Data & Soft Deletes (Lessons 47–48) ===
+
+@techEdId = 6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b
+@cloudSummitId = 3fa85f64-5717-4562-b3fc-2c963f66afa6
+@devConnectId = a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11
+
+### ── Temporal Queries ──
+
+### Read all pricing tiers for TechEd (only currently valid ones returned)
+GET http://localhost:4004/odata/v4/admin/Events(ID={{techEdId}},IsActiveEntity=true)/pricingTiers
+Authorization: Basic admin:admin
+
+
+### Time-travel: what's the TechEd price on March 15? (Early Bird: EUR 199)
+GET http://localhost:4004/odata/v4/admin/Events(ID={{techEdId}},IsActiveEntity=true)/pricingTiers?sap-valid-at=date'2026-03-15'
+Authorization: Basic admin:admin
+
+
+### Time-travel: what's the TechEd price on August 1? (Regular: EUR 349)
+GET http://localhost:4004/odata/v4/admin/Events(ID={{techEdId}},IsActiveEntity=true)/pricingTiers?sap-valid-at=date'2026-08-01'
+Authorization: Basic admin:admin
+
+
+### Time-travel: what's the TechEd price on October 5? (Late Registration: EUR 449)
+GET http://localhost:4004/odata/v4/admin/Events(ID={{techEdId}},IsActiveEntity=true)/pricingTiers?sap-valid-at=date'2026-10-05'
+Authorization: Basic admin:admin
+
+
+### Cloud Summit pricing at different dates
+GET http://localhost:4004/odata/v4/admin/Events(ID={{cloudSummitId}},IsActiveEntity=true)/pricingTiers?sap-valid-at=date'2026-03-01'
+Authorization: Basic admin:admin
+
+
+### All pricing tiers for TechEd across a date range (Q3 2026)
+GET http://localhost:4004/odata/v4/admin/Events(ID={{techEdId}},IsActiveEntity=true)/pricingTiers?sap-valid-from=date'2026-07-01'&sap-valid-to=date'2026-09-30'
+Authorization: Basic admin:admin
+
+
+### ── Soft Delete ──
+
+### Read all events (should see 3 events, all with isDeleted: false)
+GET http://localhost:4004/odata/v4/admin/Events?$select=title,status,isDeleted
+Authorization: Basic admin:admin
+
+
+### Delete DevConnect (soft delete — record stays in DB)
+DELETE http://localhost:4004/odata/v4/admin/Events(ID=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11,IsActiveEntity=true)
+Authorization: Basic admin:admin
+
+
+### Read all events again (should see only 2 — DevConnect is filtered out)
+GET http://localhost:4004/odata/v4/admin/Events?$select=title,status,isDeleted
+Authorization: Basic admin:admin
+
+
+### Direct query for soft-deleted events (escape hatch)
+# This bypasses the before-READ filter because isDeleted=true is explicitly requested
+# Note: the filterDeleted handler always adds isDeleted=false,
+# so this returns empty unless the handler is adjusted for production use.
+# In production, we'd check for an explicit $filter on isDeleted and skip the auto-filter.
+GET http://localhost:4004/odata/v4/admin/Events?$filter=isDeleted eq true&$select=title,isDeleted,deletedAt,deletedBy
+Authorization: Basic admin:admin

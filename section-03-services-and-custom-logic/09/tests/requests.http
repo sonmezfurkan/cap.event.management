@@ -1,0 +1,63 @@
+### ================
+### Catalog service
+### ================
+
+### Browser all events with the venue and sessions data
+GET http://localhost:4004/odata/v4/catalog/Events?$expand=venue,sessions
+
+### Try to create an event (should fail - 405 Method Not Allowed)
+POST http://localhost:4004/odata/v4/catalog/Events
+Content-Type: application/json
+
+{
+    "title": "This should fail"
+}
+
+### ================
+### Admin service
+### ================
+
+### Browse all events with everthing expanded
+GET http://localhost:4004/odata/v4/admin/Events?$expand=sessions,registrations,venue
+
+### Create new event
+POST http://localhost:4004/odata/v4/admin/Events
+Content-Type: application/json
+
+{
+    "title": "BTP Developer Day 2026",
+    "description": "A one-day hand-on workshop for BTP developers",
+    "startDate": "2026-10-15T09:00:00Z",
+    "endDate": "2026-10-15T17:00:00Z",
+    "maxCapacity": 100
+}
+
+### Try to create an event with invalid dates
+POST http://localhost:4004/odata/v4/admin/Events
+Content-Type: application/json
+
+{
+    "title": "BTP Developer Day 2026",
+    "description": "A one-day hand-on workshop for BTP developers",
+    "startDate": "2026-10-15T09:00:00Z",
+    "endDate": "2026-10-12T17:00:00Z",
+    "maxCapacity": 100
+}
+
+### ================
+### Registration service
+### ================
+
+### Browse events (limited fields)
+GET http://localhost:4004/odata/v4/registration/Events
+
+### Create a registration
+POST http://localhost:4004/odata/v4/registration/Registrations
+Content-Type: application/json
+
+{
+    "firstName": "Alice",
+    "lastName": "Johnson",
+    "email": "alice@example.com",
+    "event_ID": "6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b"
+}

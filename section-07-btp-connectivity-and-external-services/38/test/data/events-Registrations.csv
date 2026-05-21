@@ -1,0 +1,8 @@
+ID;event_ID;firstName;lastName;email;confirmationCode;status
+d1e2f3a4-b5c6-4d7e-8f9a-0b1c2d3e4f5a;6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b;Alice;Johnson;alice.johnson@example.com;EVT-A1B2C3;confirmed
+e2f3a4b5-c6d7-4e8f-9a0b-1c2d3e4f5a6b;6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b;Bob;Williams;bob.williams@example.com;EVT-D4E5F6;confirmed
+f3a4b5c6-d7e8-4f9a-0b1c-2d3e4f5a6b7c;6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b;Carol;Martinez;carol.martinez@example.com;EVT-G7H8I9;confirmed
+a4b5c6d7-e8f9-4a0b-1c2d-3e4f5a6b7c8d;6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b;David;Brown;david.brown@example.com;EVT-J1K2L3;confirmed
+b5c6d7e8-f9a0-4b1c-2d3e-4f5a6b7c8d9e;3fa85f64-5717-4562-b3fc-2c963f66afa6;Emma;Davis;emma.davis@example.com;EVT-M4N5O6;confirmed
+c6d7e8f9-a0b1-4c2d-3e4f-5a6b7c8d9e0f;3fa85f64-5717-4562-b3fc-2c963f66afa6;Frank;Wilson;frank.wilson@example.com;EVT-P7Q8R9;confirmed
+d7e8f9a0-b1c2-4d3e-4f5a-6b7c8d9e0f1a;3fa85f64-5717-4562-b3fc-2c963f66afa6;Grace;Taylor;grace.taylor@example.com;EVT-S1T2U3;confirmed

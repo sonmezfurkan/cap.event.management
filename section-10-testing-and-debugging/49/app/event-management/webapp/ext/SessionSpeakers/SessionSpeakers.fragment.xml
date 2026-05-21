@@ -1,0 +1,17 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:f="sap.f">
+    <VBox id="sessionSpeakersBox" class="sapUiSmallMargin">
+        <f:AvatarGroup
+            id="sessionSpeakersAvatars"
+            groupType="Individual"
+            items="{speakers}">
+            <f:AvatarGroupItem
+                id="sessionSpeakerAvatar"
+                src="{= '/odata/v4/admin/Speakers(' + ${speaker_ID} + ')/photo' }"
+                initials="{= (${speaker/lastName} || '?').substring(0, 2).toUpperCase() }"
+                tooltip="{speaker/email}" />
+        </f:AvatarGroup>
+    </VBox>
+</core:FragmentDefinition>

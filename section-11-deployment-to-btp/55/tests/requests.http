@@ -1,0 +1,163 @@
+### Variables
+@host = http://localhost:4004
+@adminAuth = Authorization: Basic admin:admin
+@organizerAuth = Authorization: Basic organizer:organizer
+@attendeeAuth = Authorization: Basic attendee:attendee
+
+### ================
+### Catalog service (open — no auth required)
+### ================
+
+### Browse all events with the venue and sessions data
+GET {{host}}/odata/v4/catalog/Events?$expand=venue,sessions
+
+### Try to create an event (should fail — 405 Method Not Allowed)
+POST {{host}}/odata/v4/catalog/Events
+Content-Type: application/json
+
+{
+    "title": "This should fail"
+}
+
+### ================
+### Admin service
+### ================
+
+### Browse all events with everything expanded
+GET {{host}}/odata/v4/admin/Events?$expand=sessions,registrations,venue
+{{adminAuth}}
+
+### Create new event (draft-enabled — creates an inactive draft)
+POST {{host}}/odata/v4/admin/Events
+{{adminAuth}}
+Content-Type: application/json
+
+{
+    "title": "BTP Developer Day 2026",
+    "description": "A one-day hands-on workshop for BTP developers",
+    "startDate": "2026-10-15T09:00:00Z",
+    "endDate": "2026-10-15T17:00:00Z",
+    "maxCapacity": 100
+}
+
+### Try to create an event with invalid dates (validation fires on draftActivate)
+POST {{host}}/odata/v4/admin/Events
+{{adminAuth}}
+Content-Type: application/json
+
+{
+    "title": "BTP Developer Day 2026",
+    "description": "A one-day hands-on workshop for BTP developers",
+    "startDate": "2026-10-15T09:00:00Z",
+    "endDate": "2026-10-12T17:00:00Z",
+    "maxCapacity": 100
+}
+
+### Check events in admin service (should show attendeeCount and seatsRemaining)
+GET {{host}}/odata/v4/admin/Events?$select=title,maxCapacity,attendeeCount,seatsRemaining
+{{adminAuth}}
+
+### ================
+### Request chaining — create → activate → publish
+### ================
+
+### Create a draft event and capture the response
+# @name createEvent
+POST {{host}}/odata/v4/admin/Events
+{{adminAuth}}
+Content-Type: application/json
+
+{
+    "title": "Chained Test Event",
+    "startDate": "2026-11-10T09:00:00Z",
+    "endDate": "2026-11-10T17:00:00Z",
+    "maxCapacity": 50
+}
+
+###
+
+### Activate the draft (uses the ID from the previous response)
+POST {{host}}/odata/v4/admin/Events(ID={{createEvent.response.body.ID}},IsActiveEntity=false)/AdminService.draftActivate
+{{adminAuth}}
+Content-Type: application/json
+
+{}
+
+###
+
+### Publish the activated event
+POST {{host}}/odata/v4/admin/Events(ID={{createEvent.response.body.ID}},IsActiveEntity=true)/AdminService.publish
+{{adminAuth}}
+Content-Type: application/json
+
+{}
+
+### ================
+### Dynamic values — fresh data on every run
+### ================
+
+### Create an event with a generated UUID and timestamped title
+POST {{host}}/odata/v4/admin/Events
+{{adminAuth}}
+Content-Type: application/json
+
+{
+    "ID": "{{$guid}}",
+    "title": "Smoke Test {{$datetime iso8601}}",
+    "startDate": "2026-12-01T09:00:00Z",
+    "endDate": "2026-12-01T17:00:00Z",
+    "maxCapacity": 50
+}
+
+### ================
+### Registration service
+### ================
+
+### Browse events (limited fields)
+GET {{host}}/odata/v4/registration/Events
+{{attendeeAuth}}
+
+### Create a registration
+POST {{host}}/odata/v4/registration/register
+{{attendeeAuth}}
+Content-Type: application/json
+
+{
+    "firstName": "Alice",
+    "lastName": "Johnson",
+    "email": "alice@example.com",
+    "eventId": "6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b"
+}
+
+### Register with missing fields (should return multiple errors)
+POST {{host}}/odata/v4/registration/register
+{{attendeeAuth}}
+Content-Type: application/json
+
+{
+    "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+}
+
+### Register for a draft event (should fail — not published)
+POST {{host}}/odata/v4/registration/register
+{{attendeeAuth}}
+Content-Type: application/json
+
+{
+    "firstName": "Alice",
+    "lastName": "Johnson",
+    "email": "alice@example.com",
+    "eventId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+}
+
+### Register successfully for TechEd (published, has capacity)
+POST {{host}}/odata/v4/registration/register
+{{attendeeAuth}}
+Content-Type: application/json
+
+{
+    "firstName": "Alice",
+    "lastName": "Johnson",
+    "email": "alice@example.com",
+    "eventId": "6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b"
+}

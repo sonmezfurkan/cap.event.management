@@ -1,0 +1,36 @@
+### === Media & Attachments (Lesson 45) ===
+
+@speakerId = 550e8400-e29b-41d4-a716-446655440000
+@eventId = 6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b
+
+### Upload a speaker photo
+PUT http://localhost:4004/odata/v4/admin/Speakers({{speakerId}})/photo
+Content-Type: image/png
+Content-Disposition: attachment; filename="jane.png"
+Authorization: Basic admin:admin
+
+< ../test/data/images/jane.png
+
+
+### Download the speaker photo
+GET http://localhost:4004/odata/v4/admin/Speakers({{speakerId}})/photo
+Authorization: Basic admin:admin
+
+
+### Read speaker metadata (photo not inlined — check photoType and photoName)
+GET http://localhost:4004/odata/v4/admin/Speakers({{speakerId}})?$select=firstName,lastName,photoType,photoName
+Authorization: Basic admin:admin
+
+
+### Upload an event banner
+PUT http://localhost:4004/odata/v4/admin/Events({{eventId}})/banner
+Content-Type: image/png
+Content-Disposition: attachment; filename="tech-ed.png"
+Authorization: Basic admin:admin
+
+< ../test/data/images/tech-ed.png
+
+
+### Download the event banner
+GET http://localhost:4004/odata/v4/admin/Events({{eventId}})/banner
+Authorization: Basic admin:admin

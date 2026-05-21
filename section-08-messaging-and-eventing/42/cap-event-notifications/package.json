@@ -1,0 +1,30 @@
+{
+  "name": "cap-event-notifications",
+  "version": "1.0.0",
+  "dependencies": {
+    "@sap/cds": "^9",
+    "@sap/xb-msg-amqp-v100": "^0.9.58"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2"
+  },
+  "scripts": {
+    "start": "cds-serve"
+  },
+  "private": true,
+  "cds": {
+    "requires": {
+      "messaging": {
+        "kind": "enterprise-messaging",
+        "subscribePrefix": "default/cap-event-management/1/",
+        "[development]": {
+          "kind": "file-based-messaging"
+        },
+        "[hybrid]": {
+          "kind": "enterprise-messaging-shared",
+          "subscribePrefix": "default/cap-event-management/1/"
+        }
+      }
+    }
+  }
+}

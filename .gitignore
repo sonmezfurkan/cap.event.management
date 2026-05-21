@@ -1,0 +1,14 @@
+# Dependencies & build output (install/build fresh inside each lesson folder)
+node_modules/
+gen/
+dist/
+mta_archives/
+*.mtar
+
+# Local credentials / env (never commit)
+.cdsrc-private.json
+.env
+.env.*
+
+# OS / editor
+.DS_Store

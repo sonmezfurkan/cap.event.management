@@ -1,0 +1,30 @@
+### Unauthenticated -> AdminService -> 401
+GET http://localhost:4004/odata/v4/admin/Events
+
+### Attendee -> AdminService -> 403
+GET http://localhost:4004/odata/v4/admin/Events
+Authorization: Basic attendee:attendee
+
+### Attendee -> RegistrationService -> 200
+GET http://localhost:4004/odata/v4/registration/Events
+Authorization: Basic attendee:attendee
+
+### Organizer -> Read Events -> 200
+GET http://localhost:4004/odata/v4/admin/Events
+Authorization: Basic organizer:organizer
+
+### Organizer -> Read Venues -> 200
+GET http://localhost:4004/odata/v4/admin/Venues
+Authorization: Basic organizer:organizer
+
+### Organizer -> Delete Venues -> 403
+DELETE http://localhost:4004/odata/v4/admin/Venues(1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed)
+Authorization: Basic organizer:organizer
+
+### Admin -> Read Events -> 200
+GET http://localhost:4004/odata/v4/admin/Events
+Authorization: Basic admin:admin
+
+### Admin -> Delete Venues -> 204
+DELETE http://localhost:4004/odata/v4/admin/Venues(1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed)
+Authorization: Basic admin:admin

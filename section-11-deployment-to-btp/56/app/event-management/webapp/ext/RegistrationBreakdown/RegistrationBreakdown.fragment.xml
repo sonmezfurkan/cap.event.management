@@ -1,0 +1,26 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+    <VBox id="registrationBreakdownBox" class="sapUiSmallMargin">
+        <HBox id="registrationTiles" justifyContent="SpaceAround" alignItems="Center">
+            <ObjectNumber 
+                id="registeredCount"
+                number="{attendeeCount}"
+                unit="Registered"
+                state="{= %{attendeeCount} > 0 ? 'Success' : 'None'}"
+            />
+            <ObjectNumber 
+                id="seatsLeftCount"
+                number="{seatsRemaining}"
+                unit="Seats Left"
+                state="{= %{seatsRemaining} &lt;= 0 ? 'Error' : %{seatsRemaining} &lt; %{maxCapacity} * 0.2 ? 'Warning' : 'Success'}"
+            />
+            <ObjectNumber 
+                id="totalCapacity"
+                number="{maxCapacity}"
+                unit="Total Capacity"
+                state="None"
+            />
+        </HBox>
+    </VBox>    
+</core:FragmentDefinition>

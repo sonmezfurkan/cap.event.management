@@ -1,0 +1,73 @@
+@base_url = http://localhost:4004/odata/v4/event
+
+### Read all events
+GET {{base_url}}/Events
+
+### Create an event
+POST {{base_url}}/Events
+Content-Type: application/json
+
+{
+    "title": "SAP TechEd 2026",
+    "startDate": "2026-10-15:09:00:00Z",
+    "endDate": "2026-10-17:18:00:00Z"
+}
+
+### Read with $select
+GET {{base_url}}/Events?$select=title,startDate
+
+### Filter by title
+GET {{base_url}}/Events?$filter=title eq 'SAP TechEd 2026'
+
+### Sort and paginate
+GET {{base_url}}/Events?$orderby=startDate desc&$top=10&$skip=0
+
+### Read all venues
+GET {{base_url}}/Venues
+
+### Create a venue
+POST {{base_url}}/Venues
+Content-Type: application/json
+
+{
+    "name": "Fira Barcelona Gran Via",
+    "city": "Barselona",
+    "country": "Spain",
+    "streetAddress": "Av. Joan Carles I, 64",
+    "postalCode": "08908",
+    "capacity": 15000
+}
+
+### Create an event with sessions (deep insert via composition)
+POST {{base_url}}/Events
+Content-Type: application/json
+
+{
+    "title": "SAP TechEd 2026",
+    "description": "The ultimate SAP technology conference",
+    "startDate": "2026-10-15T09:00:00Z",
+    "endDate": "2026-10-17T18:00:00Z",
+    "maxCapacity": 5000,
+    "status": "published",
+    "venue_ID": "f2c6acdd-c655-47df-b67c-2e00c8690433",
+    "sessions": [
+        {
+            "title": "Getting Started with CAP",
+            "description": "Intro to the CLoud Application Programming Model",
+            "startTime": "2026-10-15T10:00:00Z",
+            "endTime": "2026-10-15T11:00:00Z",
+            "maxCapacity": 200
+        },
+        {
+            "title": "Advanced CDS Modeling",
+            "description": "Deep dive into associations, compositions and aspects",
+            "startTime": "2026-10-15T14:00:00Z",
+            "endTime": "2026-10-15T15:30:00Z",
+            "maxCapacity": 150
+        }
+    ]
+}
+
+### Read an event with it's venue and sessions
+GET {{base_url}}/Events?$expand=venue,sessions
+

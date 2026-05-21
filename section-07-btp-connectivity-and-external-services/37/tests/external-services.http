@@ -1,0 +1,19 @@
+### Read all business partners
+GET http://localhost:4004/odata/v4/admin/BusinessPartners
+Authorization: Basic admin:admin
+
+### Filter by last name
+GET http://localhost:4004/odata/v4/admin/BusinessPartners?$filter=LastName eq 'Chen'
+Authorization: Basic admin:admin
+
+### Select specific fields
+GET http://localhost:4004/odata/v4/admin/BusinessPartners?$select=BusinessPartner,BusinessPartnerFullName
+Authorization: Basic admin:admin
+
+### Search
+GET http://localhost:4004/odata/v4/admin/BusinessPartners?$filter=contains(LastName, 'Garcia')
+Authorization: Basic admin:admin
+
+### Top N with ordering
+GET http://localhost:4004/odata/v4/admin/BusinessPartners?$orderby=BusinessPartnerFullName desc&$top=3
+Authorization: Basic admin:admin

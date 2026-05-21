@@ -1,0 +1,45 @@
+### === Audit Logging & Change Tracking (Lessons 43–44) ===
+
+### Read speakers — includes `bio` (IsPotentiallySensitive) → SensitiveDataRead
+GET http://localhost:4004/odata/v4/admin/Speakers?$select=firstName,lastName,email,bio
+Authorization: Basic admin:admin
+
+### Rename a speaker — direct service PATCH → PersonalDataModified
+PATCH http://localhost:4004/odata/v4/admin/Speakers(550e8400-e29b-41d4-a716-446655440000)
+Content-Type: application/json
+Authorization: Basic admin:admin
+
+{
+  "firstName": "Janet"
+}
+
+### Update event capacity — draft flow (lesson 22)
+### Step 1: edit the active record → creates a draft
+POST http://localhost:4004/odata/v4/admin/Events(ID=6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b,IsActiveEntity=true)/AdminService.draftEdit
+Content-Type: application/json
+Authorization: Basic admin:admin
+
+{}
+
+### Step 2: PATCH the draft
+PATCH http://localhost:4004/odata/v4/admin/Events(ID=6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b,IsActiveEntity=false)
+Content-Type: application/json
+Authorization: Basic admin:admin
+
+{
+  "maxCapacity": 150
+}
+
+### Step 3: activate → persists the change to sap.changelog.Changes
+POST http://localhost:4004/odata/v4/admin/Events(ID=6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b,IsActiveEntity=false)/AdminService.draftActivate
+Content-Type: application/json
+Authorization: Basic admin:admin
+
+{}
+
+### Update event status via publish → persists to sap.changelog.Changes
+POST http://localhost:4004/odata/v4/admin/Events(ID=6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b,IsActiveEntity=true)/AdminService.publish
+Content-Type: application/json
+Authorization: Basic admin:admin
+
+{}

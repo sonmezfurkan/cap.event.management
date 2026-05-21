@@ -1,0 +1,19 @@
+{
+    "name": "event-management",
+    "version": "0.0.1",
+    "description": "A Fiori application.",
+    "keywords": [
+        "ui5",
+        "openui5",
+        "sapui5"
+    ],
+    "main": "webapp/index.html",
+    "scripts": {
+        "build": "ui5 build --clean-dest --dest dist",
+        "deploy-config": "npx -p @sap/ux-ui5-tooling fiori add deploy-config cf"
+    },
+    "devDependencies": {
+        "@ui5/cli": "^3",
+        "ui5-task-zipper": "^3"
+    }
+}

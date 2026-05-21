@@ -1,0 +1,5 @@
+ID;firstName;lastName;email;bio
+550e8400-e29b-41d4-a716-446655440000;Jane;Smith;jane.smith@example.com;Full-stack developer and CAP advocate with 10 years of SAP experience
+6ba7b810-9dad-11d1-80b4-00c04fd430c8;John;Doe;john.doe@example.com;Cloud architect specializing in BTP and enterprise integration patterns
+7c9e6679-7425-40de-944b-e07fc1f90ae7;Lisa;Chen;lisa.chen@example.com;UI/UX engineer focused on Fiori Elements and design-led development
+8f14e45f-ceea-467f-a836-1d1e2e5f1c3a;Marco;Rossi;marco.rossi@example.com;TypeScript enthusiast and open-source contributor to the CAP community

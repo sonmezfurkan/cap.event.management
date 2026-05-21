@@ -1,0 +1,82 @@
+### === Row-Level Authorization (Lesson 29) ===
+
+### Step 1: Organizer creates a draft event
+POST http://localhost:4004/odata/v4/admin/Events
+Authorization: Basic organizer:organizer
+Content-Type: application/json
+
+{
+  "title": "Organizer One's Event",
+  "startDate": "2026-09-15",
+  "endDate": "2026-09-16",
+  "maxCapacity": 100
+}
+
+### Step 2: Activate the draft → creates the active event
+# Replace {{eventId}} with the ID from Step 1
+POST http://localhost:4004/odata/v4/admin/Events(ID={{eventId}},IsActiveEntity=false)/AdminService.draftActivate
+Authorization: Basic organizer:organizer
+Content-Type: application/json
+
+{
+  "SideEffectsQualifier": ""
+}
+
+### Organizer reads events → sees own event
+GET http://localhost:4004/odata/v4/admin/Events
+Authorization: Basic organizer:organizer
+
+### Organizer2 reads events → empty (no events created)
+GET http://localhost:4004/odata/v4/admin/Events
+Authorization: Basic organizer2:organizer2
+
+### Organizer2 tries to read organizer's event by ID → 404
+GET http://localhost:4004/odata/v4/admin/Events(ID={{eventId}},IsActiveEntity=true)
+Authorization: Basic organizer2:organizer2
+
+### Organizer2 tries to edit organizer's event → 403
+POST http://localhost:4004/odata/v4/admin/Events(ID={{eventId}},IsActiveEntity=true)/AdminService.draftEdit
+Authorization: Basic organizer2:organizer2
+Content-Type: application/json
+
+{
+  "PreserveChanges": true
+}
+
+### Admin reads events → sees all events
+GET http://localhost:4004/odata/v4/admin/Events
+Authorization: Basic admin:admin
+
+### --- Registration ownership ---
+
+### Attendee registers for an event
+POST http://localhost:4004/odata/v4/registration/register
+Authorization: Basic attendee:attendee
+Content-Type: application/json
+
+{
+  "eventId": "{{eventId}}",
+  "firstName": "Alice",
+  "lastName": "Smith",
+  "email": "alice@example.com"
+}
+
+### Attendee reads own registrations → sees the registration
+GET http://localhost:4004/odata/v4/registration/Registrations
+Authorization: Basic attendee:attendee
+
+### Attendee registers again for same event → 409 (duplicate)
+POST http://localhost:4004/odata/v4/registration/register
+Authorization: Basic attendee:attendee
+Content-Type: application/json
+
+{
+  "eventId": "{{eventId}}",
+  "firstName": "Alice",
+  "lastName": "Smith",
+  "email": "alice@example.com"
+}
+
+### Organizer reads registrations → empty (didn't register for anything)
+GET http://localhost:4004/odata/v4/registration/Registrations
+Authorization: Basic organizer:organizer

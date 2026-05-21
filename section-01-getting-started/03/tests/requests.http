@@ -1,0 +1,25 @@
+@base_url = http://localhost:4004/odata/v4/event
+
+### Read all events
+GET {{base_url}}/Events
+
+### Create an event
+POST {{base_url}}/Events
+Content-Type: application/json
+
+{
+    "title": "SAP TechEd 2026",
+    "startDate": "2026-10-15:09:00:00Z",
+    "endDate": "2026-10-17:18:00:00Z",
+    "status": "banana"
+}
+
+### Read with $select
+GET {{base_url}}/Events?$select=title,startDate
+
+### Filter by title
+GET {{base_url}}/Events?$filter=title eq 'SAP TechEd 2026'
+
+### Sort and paginate
+GET {{base_url}}/Events?$orderby=startDate desc&$top=10&$skip=0
+

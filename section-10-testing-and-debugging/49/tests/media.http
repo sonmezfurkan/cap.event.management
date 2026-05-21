@@ -1,0 +1,86 @@
+### === Media & Attachments (Lesson 45) ===
+
+@speakerId = 550e8400-e29b-41d4-a716-446655440000
+@eventId = 6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b
+
+### Upload a speaker photo
+PUT http://localhost:4004/odata/v4/admin/Speakers({{speakerId}})/photo
+Content-Type: image/png
+Content-Disposition: attachment; filename="jane.png"
+Authorization: Basic admin:admin
+
+< ../test/data/images/jane.png
+
+
+### Download the speaker photo
+GET http://localhost:4004/odata/v4/admin/Speakers({{speakerId}})/photo
+Authorization: Basic admin:admin
+
+
+### Read speaker metadata (photo not inlined — check photoType and photoName)
+GET http://localhost:4004/odata/v4/admin/Speakers({{speakerId}})?$select=firstName,lastName,photoType,photoName
+Authorization: Basic admin:admin
+
+
+### Upload an event banner
+PUT http://localhost:4004/odata/v4/admin/Events({{eventId}})/banner
+Content-Type: image/png
+Content-Disposition: attachment; filename="tech-ed.png"
+Authorization: Basic admin:admin
+
+< ../test/data/images/tech-ed.png
+
+
+### Download the event banner
+GET http://localhost:4004/odata/v4/admin/Events({{eventId}})/banner
+Authorization: Basic admin:admin
+
+### === Session Attachments (Lesson 46) ===
+
+@sessionId = c56a4180-65aa-42ec-a945-5fd21dec0538
+
+### 1. Put the event into edit mode — creates drafts for Event, Sessions, and Attachments
+POST http://localhost:4004/odata/v4/admin/Events(ID={{eventId}},IsActiveEntity=true)/AdminService.draftEdit
+Content-Type: application/json
+Authorization: Basic admin:admin
+
+{"SideEffectsQualifier": ""}
+
+
+### 2. List attachments on the draft session (empty at first)
+GET http://localhost:4004/odata/v4/admin/Sessions(ID={{sessionId}},IsActiveEntity=false)/attachments
+Authorization: Basic admin:admin
+
+
+### 3. Create an attachment row on the draft (copy the ID from the response into @attachmentId below)
+POST http://localhost:4004/odata/v4/admin/Sessions(ID={{sessionId}},IsActiveEntity=false)/attachments
+Content-Type: application/json
+Authorization: Basic admin:admin
+
+{}
+
+
+### Replace with the ID returned by the POST above
+@attachmentId = 00000000-0000-0000-0000-000000000000
+
+
+### 4. Upload the file content to the draft attachment
+PUT http://localhost:4004/odata/v4/admin/Sessions(ID={{sessionId}},IsActiveEntity=false)/attachments(ID={{attachmentId}},IsActiveEntity=false)/content
+Content-Type: application/pdf
+Content-Disposition: attachment; filename="slides.pdf"
+Authorization: Basic admin:admin
+
+< ../test/data/images/tech-ed.png
+
+
+### 5. Activate the draft — commits the attachment to the active entity
+POST http://localhost:4004/odata/v4/admin/Events(ID={{eventId}},IsActiveEntity=false)/AdminService.draftActivate
+Content-Type: application/json
+Authorization: Basic admin:admin
+
+{"SideEffectsQualifier": ""}
+
+
+### 6. Read the attachment metadata on the ACTIVE side — filename, mimeType, size populated
+GET http://localhost:4004/odata/v4/admin/Sessions(ID={{sessionId}},IsActiveEntity=true)/attachments(ID={{attachmentId}},IsActiveEntity=true)
+Authorization: Basic admin:admin

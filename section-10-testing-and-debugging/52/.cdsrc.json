@@ -1,0 +1,12 @@
+{
+    "requires": {                                                                                                                                                                                                  
+      "auth": {                                                                                                                                                                                                    
+        "users": {                                                                                                                                                                                                 
+          "admin":      { "password": "admin",      "roles": ["Admin"] },                                                                                                                                          
+          "organizer":  { "password": "organizer",  "roles": ["Organizer"] },                                                                                                                                      
+          "organizer2": { "password": "organizer2", "roles": ["Organizer"] },
+          "attendee":   { "password": "attendee",   "roles": ["Attendee"] }                                                                                                                                        
+        }                                                                                                                                                                                                        
+      }                                                                                                                                                                                                            
+    }                                                                                                                                                                                                              
+  }
